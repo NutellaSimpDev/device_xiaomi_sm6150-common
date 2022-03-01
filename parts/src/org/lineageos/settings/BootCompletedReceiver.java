@@ -30,6 +30,8 @@ import org.lineageos.settings.haptic.HapticUtils;
 import org.lineageos.settings.utils.FileUtils;
 import android.content.SharedPreferences;
 import androidx.preference.PreferenceManager;
+import org.lineageos.settings.touchsampling.TouchSamplingUtils;
+import org.lineageos.settings.refreshrate.RefreshUtils;
 
 public class BootCompletedReceiver extends BroadcastReceiver {
     private static final boolean DEBUG = false;
@@ -46,7 +48,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
         }
         if (DEBUG)
             Log.d(TAG, "Received boot completed intent");
-	// Doze
+	    // Doze
         DozeUtils.onBootCompleted(context);
 
         // Dirac
@@ -57,12 +59,14 @@ public class BootCompletedReceiver extends BroadcastReceiver {
 
         // Haptic
         HapticUtils.restoreLevel(context);
+        TouchSamplingUtils.restoreSamplingValue(context);
+        RefreshUtils.startService(context);
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
 
         boolean dcDimmingEnabled = sharedPrefs.getBoolean(DC_DIMMING_ENABLE_KEY, false);
         FileUtils.writeLine(DC_DIMMING_NODE, dcDimmingEnabled ? "1" : "0");
         boolean hbmEnabled = sharedPrefs.getBoolean(HBM_ENABLE_KEY, false);
-        FileUtils.writeLine(HBM_NODE, hbmEnabled ? "1" : "0");
+        FileUtils.writeLine(HBM_NODE, hbmEnabled ? "1" : "0");        
     }
 }
