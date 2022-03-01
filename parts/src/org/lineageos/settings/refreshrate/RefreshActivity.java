@@ -17,12 +17,9 @@
 package org.lineageos.settings.refreshrate;
 
 import android.os.Bundle;
-import android.view.MenuItem;
+import android.preference.PreferenceActivity;
 
-import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity;
-import com.android.settingslib.widget.R;
-
-public class RefreshActivity extends CollapsingToolbarBaseActivity {
+public class RefreshActivity extends PreferenceActivity {
 
     private static final String TAG_REFRESH = "refresh";
 
@@ -30,17 +27,7 @@ public class RefreshActivity extends CollapsingToolbarBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        getFragmentManager().beginTransaction().replace(R.id.content_frame,
+        getFragmentManager().beginTransaction().replace(android.R.id.content,
                 new RefreshSettingsFragment(), TAG_REFRESH).commit();
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
-            return true;
-        }
-        return false;
     }
 }
