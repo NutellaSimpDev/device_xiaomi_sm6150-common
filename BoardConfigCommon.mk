@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2020-2023 The LineageOS Project
+# Copyright (C) 2020 The LineageOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -63,7 +63,8 @@ LOC_HIDL_VERSION := 4.0
 # HIDL
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE := \
     $(COMMON_PATH)/configs/hidl/xiaomi_framework_compatibility_matrix.xml \
-    hardware/qcom-caf/common/vendor_framework_compatibility_matrix.xml
+    hardware/qcom-caf/common/vendor_framework_compatibility_matrix.xml \
+    vendor/aosp/config/device_framework_matrix.xml
 
 DEVICE_MANIFEST_FILE := $(COMMON_PATH)/configs/hidl/manifest.xml
 DEVICE_MANIFEST_FILE += hardware/qcom-caf/sm8150/media/conf_files/sm6150/c2_manifest.xml
@@ -71,52 +72,41 @@ DEVICE_MATRIX_FILE := $(COMMON_PATH)/configs/hidl/compatibility_matrix.xml
 
 # Kernel
 BOARD_KERNEL_BASE := 0x00000000
-BOARD_KERNEL_IMAGE_NAME := Image.gz
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_SEPARATED_DTBO := true
 
 TARGET_KERNEL_SOURCE := kernel/xiaomi/sm6150
 TARGET_KERNEL_CLANG_COMPILE := true
 
-BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom
+BOARD_KERNEL_CMDLINE := console=ttyMSM0,115200n8 earlycon=msm_geni_serial,0x880000
+BOARD_KERNEL_CMDLINE += androidboot.hardware=qcom androidboot.console=ttyMSM0
 BOARD_KERNEL_CMDLINE += androidboot.usbcontroller=a600000.dwc3
 BOARD_KERNEL_CMDLINE += service_locator.enable=1
 BOARD_KERNEL_CMDLINE += lpm_levels.sleep_disabled=1
 BOARD_KERNEL_CMDLINE += loop.max_part=7
-BOARD_KERNEL_CMDLINE += cgroup_disable=pressure
 
+# TARGET_KERNEL_APPEND_DTB handling
+ifeq ($(strip $(PRODUCT_USE_DYNAMIC_PARTITIONS)),true)
+BOARD_KERNEL_IMAGE_NAME := Image.gz
+TARGET_KERNEL_APPEND_DTB := false
+else
+BOARD_KERNEL_IMAGE_NAME := Image.gz-dtb
+TARGET_KERNEL_APPEND_DTB := true
+endif
+
+# Set header version for bootimage
+ifneq ($(strip $(TARGET_KERNEL_APPEND_DTB)),true)
 # Enable DTB in bootimage and set header version
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 BOARD_BOOTIMG_HEADER_VERSION := 2
+else
+BOARD_BOOTIMG_HEADER_VERSION := 1
+endif
 BOARD_MKBOOTIMG_ARGS := --header_version $(BOARD_BOOTIMG_HEADER_VERSION)
 
 # Media
 TARGET_USES_ION := true
 TARGET_DISABLED_UBWC := true
-
-# Partitions
-BOARD_FLASH_BLOCK_SIZE := 262144 # (BOARD_KERNEL_PAGESIZE * 64)
-
-BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
-BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := odm product system system_ext vendor
-
-BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_ODMIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
-
-BOARD_PRODUCTIMAGE_PARTITION_RESERVED_SIZE := 614400000
-BOARD_SYSTEMIMAGE_PARTITION_RESERVED_SIZE := 92160000
-BOARD_SYSTEM_EXTIMAGE_PARTITION_RESERVED_SIZE := 92160000
-
-BOARD_USES_METADATA_PARTITION := true
-
-TARGET_COPY_OUT_ODM := odm
-TARGET_COPY_OUT_PRODUCT := product
-TARGET_COPY_OUT_SYSTEM_EXT := system_ext
-TARGET_COPY_OUT_VENDOR := vendor
 
 # Platform
 TARGET_BOARD_PLATFORM := sm6150
@@ -134,16 +124,13 @@ BOARD_USES_QCOM_HARDWARE := true
 
 # Recovery
 BOARD_INCLUDE_RECOVERY_DTBO := true
-TARGET_RECOVERY_FSTAB := $(COMMON_PATH)/rootdir/etc/recovery.fstab
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
-TARGET_USERIMAGES_USE_EXT4 := true
-TARGET_USERIMAGES_USE_F2FS := true
 
 # RIL
 ENABLE_VENDOR_RIL_SERVICE := true
 
 # Releasetools
-#TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_xiaomi
+TARGET_RECOVERY_UPDATER_LIBS := librecovery_updater_xiaomi
 TARGET_RELEASETOOLS_EXTENSIONS := $(COMMON_PATH)
 
 # Sepolicy

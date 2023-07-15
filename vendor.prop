@@ -113,12 +113,6 @@ camera.disable_zsl_mode=1
 # Chipset
 ro.soc.manufacturer=QTI
 
-# Crypto
-ro.crypto.dm_default_key.options_format.version=2
-ro.crypto.volume.filenames_mode=aes-256-cts
-ro.crypto.volume.metadata.method=dm-default-key
-ro.crypto.volume.options=::v2
-
 # Dalvik
 dalvik.vm.systemuicompilerfilter=speed
 
@@ -135,19 +129,20 @@ persist.vendor.dpmhalservice.enable=1
 # Display
 debug.egl.hw=0
 debug.mdpcomp.logs=0
+debug.sf.disable_backpressure=1
 debug.sf.disable_client_composition_cache=1
-debug.sf.enable_gl_backpressure=1
 debug.sf.enable_transaction_tracing=false
 debug.sf.use_phase_offsets_as_durations=1
-debug.sf.late.sf.duration=10500000
-debug.sf.late.app.duration=20500000
-debug.sf.early.sf.duration=21000000
-debug.sf.early.app.duration=16500000
-debug.sf.earlyGl.sf.duration=13500000
-debug.sf.earlyGl.app.duration=21000000
+debug.sf.late.sf.duration=15666666
+debug.sf.late.app.duration=16666666
+debug.sf.early.sf.duration=15666666
+debug.sf.early.app.duration=16666666
+debug.sf.earlyGl.sf.duration=15666666
+debug.sf.earlyGl.app.duration=16666666
 debug.sf.enable_hwc_vds=1
 debug.sf.hw=0
 debug.sf.predict_hwc_composition_strategy=0
+debug.sf.latch_unsignaled=1
 debug.sf.treat_170m_as_sRGB=1
 ro.hardware.egl=adreno
 ro.hardware.vulkan=adreno
@@ -188,6 +183,8 @@ ro.frp.pst=/dev/block/bootdevice/by-name/frp
 persist.dbg.volte_avail_ovr=1
 persist.dbg.vt_avail_ovr=1
 persist.dbg.wfc_avail_ovr=1
+persist.vendor.radio.report_codec=1
+persist.vendor.radio.vdp_on_ims_cap=1
 
 # Media
 debug.stagefright.ccodec=1
@@ -196,14 +193,10 @@ debug.stagefright.omx_default_rank=0
 # Netflix
 vendor.netflix.bsp_rev=Q6150-17263-1
 
-# Perf
-ro.vendor.extension_library=libqti-perfd-client.so
-
 # QC framework value-adds
 ro.vendor.qti.va_aosp.support=1
 
 # Radio
-persist.radio.multisim.config=dsds
 persist.vendor.radio.apm_sim_not_pwdn=1
 persist.vendor.radio.custom_ecc=1
 persist.vendor.radio.data_ltd_sys_ind=1
@@ -216,12 +209,6 @@ persist.vendor.radio.procedure_bytes=SKIP
 persist.vendor.radio.rat_on=combine
 persist.vendor.radio.report_codec=1
 persist.vendor.radio.sib16_support=1
-ro.telephony.default_cdma_sub=0
-ro.telephony.default_network=22,22
-telephony.lteOnCdmaDevice=1
-
-# RCS
-persist.rcs.supported=1
 
 # Suspend properties
 suspend.short_suspend_threshold_millis=2000

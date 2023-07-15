@@ -60,8 +60,9 @@ on init
     write /proc/sys/vm/page-cluster 0
 
 on fs
-    mount_all --early
+    mount_all --early /vendor/etc/fstab.qcom
 
+    exec u:r:vendor_toolbox:s0 root audio bluetooth graphics media net_raw system vendor_rfs vendor_rfs_shared -- /vendor/bin/toybox_vendor find /mnt/vendor/persist -type d -exec /vendor/bin/toybox_vendor setfattr -x security.sehash {} \;
     restorecon_recursive /mnt/vendor/persist
     mkdir /mnt/vendor/persist/data 0700 system system
     mkdir /mnt/vendor/persist/audio 0755 system system
@@ -70,7 +71,7 @@ on fs
 on late-fs
     wait_for_prop hwservicemanager.ready true
     exec_start wait_for_keymaster
-    mount_all --late
+    mount_all --late /vendor/etc/fstab.qcom
 
 on post-fs-data
     mkdir /data/vendor/nnhal 0700 system system
@@ -82,7 +83,6 @@ on post-fs-data
     mkdir /data/vendor/fpc 0770 system system
     mkdir /data/vendor/goodix 0770 system system
     mkdir /mnt/vendor/persist/fpc 0770 system system
-    mkdir /data/vendor/fpdump 0770 system system
 
 on boot
     start rmt_storage
@@ -94,7 +94,9 @@ on boot
 
     # Set doze mode permissions
     chown system system /sys/devices/platform/soc/soc:qcom,dsi-display/doze_mode
+    chown system system /sys/devices/platform/soc/soc:qcom,dsi-display/doze_status
     chmod 0660 /sys/devices/platform/soc/soc:qcom,dsi-display/doze_mode
+    chmod 0660 /sys/devices/platform/soc/soc:qcom,dsi-display/doze_status
 
     # Set xiaomi touch permissions
     chown system system /dev/xiaomi-touch
@@ -120,7 +122,6 @@ on boot
 
     # Create fingerprint related directory
     mkdir /mnt/vendor/persist/goodix 0770 system system
-    mkdir /mnt/vendor/persist/fpc 0770 system system
 
 on property:sys.boot_completed=1
     # Set allocstall_threshold to 0
@@ -174,7 +175,7 @@ on property:sys.shutdown.requested=*
 
 on charger
     wait /dev/block/platform/soc/1da4000.ufshc/by-name/system
-    mount ext4 /dev/block/platform/soc/1da4000.ufshc/by-name/system / ro barrier=1
+    mount erofs /dev/block/platform/soc/1da4000.ufshc/by-name/system / ro
 
     wait /dev/block/platform/soc/1da4000.ufshc/by-name/persist
     mount ext4 /dev/block/bootdevice/by-name/persist /mnt/vendor/persist nosuid nodev barrier=1
