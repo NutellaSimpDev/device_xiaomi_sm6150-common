@@ -167,6 +167,15 @@ vendor.display.enable_force_split=1
 vendor.display.qdcm.mode_combine=1
 debug.sf.latch_unsignaled=0
 
+# Fling
+ro.min.fling_velocity=160 
+ro.max.fling_velocity=20000
+ro.max.fling_velocity=20000 
+ro.vendor.qti.cgroup_follow.enable=true 
+persist.vendor.qti.inputopts.enable=true 
+persist.vendor.qti.inputopts.movetouchslop=0.6 
+ro.qcom.adreno.qgl.ShaderStorageImageExtendedFormats=0
+
 # Attempt to fix QS
 debug.sf.high_fps_early_gl_phase_offset_ns=-4000000
 debug.sf.high_fps_late_sf_phase_offset_ns=-4000000
