@@ -136,7 +136,6 @@ debug.sf.enable_hwc_vds=1
 debug.sf.hw=0
 debug.sf.enable_gl_backpressure=1
 debug.sf.predict_hwc_composition_strategy=0
-debug.sf.latch_unsignaled=true
 debug.sf.treat_170m_as_sRGB=1
 debug.composition.type=gpu
 persist.sys.composition.type=gpu
@@ -166,6 +165,7 @@ vendor.display.enable_optimize_refresh=1
 vendor.gralloc.disable_ubwc=0
 vendor.display.enable_force_split=1
 vendor.display.qdcm.mode_combine=1
+debug.sf.latch_unsignaled=0
 
 # Attempt to fix QS
 debug.sf.high_fps_early_gl_phase_offset_ns=-4000000
