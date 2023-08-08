@@ -165,6 +165,7 @@ vendor.gralloc.disable_ubwc=0
 vendor.display.enable_force_split=1
 vendor.display.qdcm.mode_combine=1
 debug.sf.latch_unsignaled=0
+debug.sdm.support_writeback=0
 
 # Fling
 ro.min.fling_velocity=160 
