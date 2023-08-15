@@ -44,3 +44,6 @@ ro.recovery.ui.margin_height=48
 
 # WiFi
 wifi.interface=wlan0
+
+# Dex2oat
+dalvik.vm.dex2oat64.enabled=true
