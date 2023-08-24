@@ -169,6 +169,7 @@ debug.sdm.support_writeback=0
 debug.hwui.use_hint_manager=true
 debug.hwui.target_cpu_time_percent=20
 debug.sf.frame_rate_multiple_threshold=144
+vendor.display.disable_rotator_downscale=1
 
 # Fling
 ro.min.fling_velocity=160 
@@ -237,7 +238,6 @@ wifi.aware.interface=wifi-aware0
 
 # Zygote
 zygote.critical_window.minute=10
-ro.zygote.disable_gl_preload=false
 
 # Dolby
 vendor.audio.dolby.ds2.enabled=true
