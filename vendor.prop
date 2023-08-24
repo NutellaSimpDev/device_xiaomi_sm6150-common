@@ -166,6 +166,9 @@ vendor.display.enable_force_split=1
 vendor.display.qdcm.mode_combine=1
 debug.sf.latch_unsignaled=0
 debug.sdm.support_writeback=0
+debug.hwui.use_hint_manager=true
+debug.hwui.target_cpu_time_percent=20
+debug.sf.frame_rate_multiple_threshold=144
 
 # Fling
 ro.min.fling_velocity=160 
